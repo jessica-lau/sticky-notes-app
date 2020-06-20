@@ -23,13 +23,26 @@ class App extends Component {
             description: "build an awesome ui",
             doesMatchSearch: true
         }],
-        searchText: "Search"
+        searchText: "Search",
 
     }
+
+    addNote = () => {
+        var newNote = {
+            id: Date.now(),
+            title: '',
+            description: '',
+            doesMatchSearch: true,
+        }
+
+        var newNotes = [...this.state.notes, newNote];
+        this.setState({ notes: newNotes });
+    }
+
     render() {
         return (
             <div class="App">
-                <Header searchText={this.state.searchText} />
+                <Header searchText={this.state.searchText} addNew={this.addNote} />
                 <NotesList notes={this.state.notes} />
             </div>
         );
