@@ -46,12 +46,44 @@ class App extends Component {
         var newList = this.state.notes;
         newList[editMeId] = editNote;
         this.setState({ notes: newList });
-      };
+    };
+
+    onSearch = e => {
+        /* toggle the doesMatchSearch boolean value of each sticky
+        note when the user types in the search field.
+        set the doesMatchSearch value to true for a sticky note if
+        it's title or description matches the search string. */
+        var searchText = e.target.value.toLowerCase();
+        var updatedNotes = this.state.notes.map(note => {
+            if (!searchText) {
+                /* If the search field is empty, then
+              we set the doesMatchSearch value for every note to true. */
+                return {
+                    ...note,
+                    doesMatchSearch: true
+                };
+            } else {
+                var title = note.title.toLowerCase();
+                var description = note.description.toLowerCase();
+                var titleMatch = title.includes(searchText);
+                var descriptionMatch = description.includes(searchText);
+                var hasMatch = titleMatch || descriptionMatch;
+                return {
+                    ...note,
+                    doesMatchSearch: hasMatch
+                };
+            }
+        });
+        this.setState({
+            searchText: searchText,
+            notes: updatedNotes
+        });
+    };
 
     render() {
         return (
             <div class="App">
-                <Header searchText={this.state.searchText} addNew={this.addNote} />
+                <Header searchText={this.state.searchText} addNew={this.addNote} onSearch={this.onSearch} />
                 <NotesList notes={this.state.notes} onType={this.onType} />
             </div>
         );
