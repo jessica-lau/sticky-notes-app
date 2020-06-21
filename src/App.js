@@ -39,11 +39,20 @@ class App extends Component {
         this.setState({ notes: newNotes });
     }
 
+    onType = (editMeId, updatedKey, updatedValue) => {
+        var editNote = this.state.notes.find(x => x.id === editMeId);
+        console.log(editMeId);
+        editNote[updatedKey] = updatedValue;
+        var newList = this.state.notes;
+        newList[editMeId] = editNote;
+        this.setState({ notes: newList });
+      };
+
     render() {
         return (
             <div class="App">
                 <Header searchText={this.state.searchText} addNew={this.addNote} />
-                <NotesList notes={this.state.notes} />
+                <NotesList notes={this.state.notes} onType={this.onType} />
             </div>
         );
     }
