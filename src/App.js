@@ -84,6 +84,19 @@ class App extends Component {
         });
     };
 
+    componentDidUpdate () {
+        var saveNotesInString = JSON.stringify(this.state);
+        localStorage.setItem("savedNotes", saveNotesInString);
+    
+    }
+    componentDidMount() {
+        var saveNotesInString = localStorage.getItem("savedNotes");
+        if (saveNotesInString) {
+            var savedState = JSON.parse(saveNotesInString);
+            this.setState(savedState);
+        }
+    }
+
     render() {
         return (
             <div class="App">
