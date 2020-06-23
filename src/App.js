@@ -29,7 +29,7 @@ class App extends Component {
 
     addNote = () => {
         var newNote = {
-            id: Date.now(),
+            id: this.state.notes.length,
             title: '',
             description: '',
             doesMatchSearch: true,
@@ -39,9 +39,13 @@ class App extends Component {
         this.setState({ notes: newNotes });
     }
 
+    removeNote = (removeId) => {
+        var remainingNotes = this.state.notes.filter(x => x.id !== removeId);
+        this.setState({ notes: remainingNotes });
+    }
+
     onType = (editMeId, updatedKey, updatedValue) => {
         var editNote = this.state.notes.find(x => x.id === editMeId);
-        console.log(editMeId);
         editNote[updatedKey] = updatedValue;
         var newList = this.state.notes;
         newList[editMeId] = editNote;
@@ -84,7 +88,7 @@ class App extends Component {
         return (
             <div class="App">
                 <Header searchText={this.state.searchText} addNew={this.addNote} onSearch={this.onSearch} />
-                <NotesList notes={this.state.notes} onType={this.onType} />
+                <NotesList notes={this.state.notes} onType={this.onType} removeNote={this.removeNote} />
             </div>
         );
     }
